@@ -4,22 +4,19 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const registerStudent = asyncHandle(async(req, res) => {
-    const { name, email, password, dob, address, phone } = req.body
+    const { name, email, password} = req.body
 
     const studentExist = await studentModel.findOne({ email })
     if (studentExist) {
         res.status(400)
         throw new Error('Account has already existed!')
     }
-    const newStudent = await studentModel.create({ name, email, password, dob, address, phone })
+    const newStudent = await studentModel.create({ name, email, password})
     if (newStudent) {
         res.status(200).json({
             _id: newStudent._id,
             name: newStudent.name,
             email: newStudent.email,
-            dob: newStudent.dob,
-            address: newStudent.address,
-            phone: newStudent.phone,
             jwt: jwt.sign({ id: newStudent._id }, 'secret', {
                 expiresIn: '1d'
             })

@@ -5,10 +5,7 @@ const registerValidate = (req, res, next) => {
     const schema = Joi.object({
         name: Joi.string().required(),
         email: Joi.string().email().required(),
-        password: Joi.string().min(8).required(),
-        dob: Joi.string().required(),
-        address: Joi.string().required(),
-        phone: Joi.string().required()
+        password: Joi.string().min(8).required()
     })
     const { error } = schema.validate(data)
     if (error) return res.status(400).send(error.details[0].message)
